@@ -5,5 +5,5 @@
 
   tasks:
     - name: Reboot machine
-      ansible.builtin.reboot:
+      ansible.builtin.reboot: Shutting the machine down
         reboot_timeout: 3600
