@@ -7,5 +7,5 @@
 
   gather_facts: true
   tasks:
-      become: true
+    - become: true
     - command: '{{apt-get update}}'
