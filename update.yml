@@ -1,24 +1,31 @@
 ---
-- name: Execute commands on remote targets
-  hosts: all
+- name: Update Debian server
+  hosts: debian_servers
+  become: yes  # Use sudo for tasks that require elevated privileges
   tasks:
-    - name: Execute the uptime command
-      shell: "uptime"
-      register: uptime_var
-      
-    - debug:
-      	msg: "{{uptime_var.stdout}}"
-        
-    - name: Execute the date command
-      shell: "date"
-      register: date_var
-      
-    - debug:
-      	msg: "{{date_var.stdout}}"
 
-    - name: Update the server
-     shell: "apt-get update -y"
-     register:apt-get_var
+    - name: Update the APT package index
+      apt:
+        update_cache: yes
 
-    - debug:
-       msg: "{{apt-get_var.stdout}}"
+    - name: Upgrade all packages to the latest version
+      apt:
+        upgrade: dist
+        autoremove: yes
+        autoclean: yes
+
+    - name: Install security updates
+      apt:
+        upgrade: dist
+        cache_valid_time: 3600  # Refresh cache if it's older than 1 hour
+
+    - name: Remove unnecessary packages and dependencies
+      apt:
+        autoremove: yes
+        autoclean: yes
+
+    - name: Reboot the server if required
+      reboot:
+        msg: "Reboot initiated by Ansible after system update"
+        reboot_timeout: 600
+        connect_timeout: 300
