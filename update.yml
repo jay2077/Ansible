@@ -1,18 +1,6 @@
---
-  - name: Patch the server and Reboot
-    hosts: app
-    tasks:
-      - name: Patch the server
-        become: yes
-        become_user: root
-        tags: update
-        shell: "apt get update"
-        register: update
+---
 
-      - name: Reboot the server
-        tags: reboot
-        become: yes
-        become_user: root
-        shell: "sleep 5 && reboot"
-        async: 1
-        poll: 0
+- hosts: all
+  gather_facts: true
+  tasks:
+    - ping:
