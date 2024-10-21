@@ -1,5 +1,6 @@
 ---
 - name: Reboot machine
+  hosts: all
   become: true
 
   tasks:
