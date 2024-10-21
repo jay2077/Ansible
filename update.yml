@@ -1,4 +1,24 @@
-- hosts: all
-  gather_facts: true
+---
+- name: Execute commands on remote targets
+  hosts: all
   tasks:
-    - command: '{{apt-get update -y}}'
+    - name: Execute the uptime command
+      shell: "uptime"
+      register: uptime_var
+      
+    - debug:
+      	msg: "{{uptime_var.stdout}}"
+        
+    - name: Execute the date command
+      shell: "date"
+      register: date_var
+      
+    - debug:
+      	msg: "{{date_var.stdout}}"
+
+    - name: Update the server
+     shell: "apt-get update -y"
+     register:apt-get_var
+
+    - debug:
+       msg: "{{apt-get_var.stdout}}"
