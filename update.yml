@@ -1,11 +1,4 @@
----
-
 - hosts: all
   gather_facts: true
   tasks:
-    - ping:
-
-  gather_facts: true
-  tasks:
-    - become: true
     - command: '{{apt-get update}}'
