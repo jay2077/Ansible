@@ -1,6 +1,6 @@
 ---
 - name: Update Debian server
-  hosts: debian_servers
+  hosts: all
   become: yes  # Use sudo for tasks that require elevated privileges
   tasks:
 
