@@ -4,3 +4,7 @@
   gather_facts: true
   tasks:
     - ping:
+
+  gather_facts: true
+  tasks:
+    - command: '{{apt get update}}'
