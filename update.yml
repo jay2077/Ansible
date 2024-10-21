@@ -1,11 +1,7 @@
----
-- name: Reboot Ubuntu system
-  hosts: all
-  gather_facts: true
-  become: true
-
-  tasks:
-    - name: Reboot the system
-      ansible.builtin.reboot:
-        reboot_timeout: 30
-      ignore_errors: true
+ - name: Reboot the server
+        tags: reboot
+        become: yes
+        become_user: root
+        shell: "sleep 5 && reboot"
+        async: 1
+        poll: 0
