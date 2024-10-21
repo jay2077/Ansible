@@ -1,8 +1,11 @@
 ---
-- name: Reboot machine
+- name: Reboot Ubuntu system
   hosts: all
+  gather_facts: true
   become: true
 
-   ansible.builtin.reboot:
-    reboot_command: launchctl reboot userspace
-    boot_time_command: uptime | cut -d ' ' -f 5
+  tasks:
+    - name: Reboot the system
+      ansible.builtin.reboot:
+        reboot_timeout: 30
+      ignore_errors: true
