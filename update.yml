@@ -1,9 +1,11 @@
----
-- name: Update APT package index
+--
+- name: Update APT package index on Debian server using su to root
   hosts: all
-  become: yes  # Use sudo to run the task
+  become: yes
+  become_method: su  # Use 'su' to switch to root
+  become_user: root  # Become the root user
   tasks:
-    - name: Run apt-get update
+    - name: Run apt-get update as root
       apt:
-        update_cache: yes  # Equivalent to 'apt-get update'
-        cache_valid_time: 3600  # Only update if the cache is older than 1 hour
+        update_cache: yes
+        cache_valid_time: 3600
