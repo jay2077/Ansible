@@ -14,3 +14,17 @@
       reboot:
         msg: "Rebooting after apt-get update"
         reboot_timeout: 600
+        connect_timeout: 5  # Time before retrying connection after reboot
+
+    - name: Wait for the server to come back up
+      wait_for:
+        port: 22
+        timeout: 300  # Wait for SSH to be available
+
+    - name: Display system uptime
+      command: uptime
+      register: uptime_output
+
+    - name: Print uptime on console
+      debug:
+        msg: "Uptime: {{ uptime_output.stdout }}"
