@@ -1,26 +1,9 @@
 ---
-- name: Update Debian server
-  hosts: all
-  become: yes  # Use sudo for elevated privileges
+- name: Update APT package index
+  hosts: debian_servers
+  become: yes  # Use sudo to run the task
   tasks:
-
-    - name: Update the APT package index
+    - name: Run apt-get update
       apt:
-        update_cache: yes
-        cache_valid_time: 3600
-
-    - name: Upgrade all packages to the latest version
-      apt:
-        upgrade: dist
-        autoremove: yes
-        autoclean: yes
-
-    - name: Remove unnecessary packages
-      apt:
-        autoremove: yes
-        autoclean: yes
-
-    - name: Reboot the server if needed
-      reboot:
-        msg: "Rebooting after updates"
-        reboot_timeout: 600
+        update_cache: yes  # Equivalent to 'apt-get update'
+        cache_valid_time: 3600  # Only update if the cache is older than 1 hour
