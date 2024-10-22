@@ -1,12 +1,13 @@
 ---
 - name: Update Debian server
   hosts: all
-  become: yes  # Use sudo for tasks that require elevated privileges
+  become: yes  # Use sudo for elevated privileges
   tasks:
 
     - name: Update the APT package index
       apt:
         update_cache: yes
+        cache_valid_time: 3600
 
     - name: Upgrade all packages to the latest version
       apt:
@@ -14,18 +15,12 @@
         autoremove: yes
         autoclean: yes
 
-    - name: Install security updates
-      apt:
-        upgrade: dist
-        cache_valid_time: 3600  # Refresh cache if it's older than 1 hour
-
-    - name: Remove unnecessary packages and dependencies
+    - name: Remove unnecessary packages
       apt:
         autoremove: yes
         autoclean: yes
 
-    - name: Reboot the server if required
+    - name: Reboot the server if needed
       reboot:
-        msg: "Reboot initiated by Ansible after system update"
+        msg: "Rebooting after updates"
         reboot_timeout: 600
-        connect_timeout: 300
