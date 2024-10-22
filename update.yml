@@ -1,4 +1,4 @@
---
+---
 - name: Update APT package index on Debian server using su to root
   hosts: all
   become: yes
