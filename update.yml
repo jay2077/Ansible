@@ -1,5 +1,5 @@
 ---
-- name: Update APT package index on Debian server using su to root and reboot
+- name: Update APT package index on Debian server using su to root and force reboot
   hosts: all
   become: yes
   become_method: su  # Use 'su' to switch to root
@@ -9,12 +9,18 @@
       apt:
         update_cache: yes
         cache_valid_time: 3600
+      register: apt_update  # Register output to check later
 
-    - name: Reboot the server after update
+    - name: Wait before rebooting to ensure updates are complete
+      pause:
+        seconds: 10  # Wait for 10 seconds before rebooting
+
+    - name: Force reboot the server after update
       reboot:
-        msg: "Rebooting after apt-get update"
+        msg: "Force rebooting after apt-get update"
         reboot_timeout: 600
         connect_timeout: 5  # Time before retrying connection after reboot
+        force: yes  # Force the reboot even if processes are running
 
     - name: Wait for the server to come back up
       wait_for:
