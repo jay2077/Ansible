@@ -1,6 +1,6 @@
 ---
 - name: Update APT package index
-  hosts: debian_servers
+  hosts: all
   become: yes  # Use sudo to run the task
   tasks:
     - name: Run apt-get update
