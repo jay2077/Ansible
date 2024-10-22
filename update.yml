@@ -16,11 +16,9 @@
         seconds: 10  # Wait for 10 seconds before rebooting
 
     - name: Force reboot the server after update
-      reboot:
-        msg: "Force rebooting after apt-get update"
-        reboot_timeout: 600
-        connect_timeout: 5  # Time before retrying connection after reboot
-        force: yes  # Force the reboot even if processes are running
+      command: /sbin/shutdown -r now  # Forcibly reboot the server
+      async: 1  # Run the command asynchronously
+      poll: 0   # Don't wait for the command to complete
 
     - name: Wait for the server to come back up
       wait_for:
