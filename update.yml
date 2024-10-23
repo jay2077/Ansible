@@ -5,3 +5,28 @@
   tasks:
     - name: Ping the hosts
       ping:
+
+- name: Change hostname to 'dummy'
+      become: yes  # Ensure the task runs with sudo/root privileges
+      hostname:
+        name: dummy
+
+    - name: Reboot the server to apply the new hostname (optional)
+      become: yes
+      reboot:
+        msg: "Rebooting to apply new hostname"
+        reboot_timeout: 600
+
+    - name: Wait for the server to come back online
+      wait_for:
+        port: 22
+        timeout: 300
+
+    - name: Confirm new hostname
+      become: yes
+      command: hostname
+      register: hostname_output
+
+    - name: Display the new hostname on the console
+      debug:
+        msg: "New hostname is: {{ hostname_output.stdout }}"
