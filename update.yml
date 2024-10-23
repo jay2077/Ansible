@@ -1,13 +1,13 @@
 ---
-- name: Ping all hosts
-  hosts: all  # You can specify a particular group if you want
-  gather_facts: no  # Skip gathering facts, only ping
+- name: Ping all hosts and change hostname to 'dummy'
+  hosts: all
+  gather_facts: no
   tasks:
     - name: Ping the hosts
       ping:
 
-- name: Change hostname to 'dummy'
-      become: yes  # Ensure the task runs with sudo/root privileges
+    - name: Change hostname to 'dummy'
+      become: yes  # Use sudo to execute with root privileges
       hostname:
         name: dummy
 
