@@ -1,34 +1,7 @@
 ---
-- name: Update APT package index on Debian server using su to root and force reboot
-  hosts: all
-  become: yes
-  become_method: sudo # Use 'su' to switch to root
-  become_user: root  # Become the root user
+- name: Ping all hosts
+  hosts: all  # You can specify a particular group if you want
+  gather_facts: no  # Skip gathering facts, only ping
   tasks:
-    - name: Run apt-get update as root
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-      register: apt_update  # Register output to check later
-
-    - name: Wait before rebooting to ensure updates are complete
-      pause:
-        seconds: 10  # Wait for 10 seconds before rebooting
-
-    - name: Force reboot the server after update
-      command: /sbin/shutdown -r now  # Forcibly reboot the server
-      async: 1  # Run the command asynchronously
-      poll: 0   # Don't wait for the command to complete
-
-    - name: Wait for the server to come back up
-      wait_for:
-        port: 22
-        timeout: 300  # Wait for SSH to be available
-
-    - name: Display system uptime
-      command: uptime
-      register: uptime_output
-
-    - name: Print uptime on console
-      debug:
-        msg: "Uptime: {{ uptime_output.stdout }}"
+    - name: Ping the hosts
+      ping:
